@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Auto Date Switch</title>
+
+  <script>
+    const today = new Date();
+    
+    const day = today.getDate();
+    const month = today.getMonth() + 1; // (January = 0, so +1)
+
+    // If today is 12 December
+    if (day === 12 && month === 12) {
+      window.location.href = "filea.html";
+    } 
+    else {
+      window.location.href = "fileb.html"; // default for all other days
+    }
+  </script>
+</head>
+<body>
+</body>
+</html>

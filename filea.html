@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Texnox | Digital Consultancy - Holiday Edition</title>
+    <meta name="description"
+        content="Texnox: extensive digital strategies and bespoke web design. Celebrating excellence this holiday season.">
+    <meta name="keywords"
+        content="digital consultancy, web design, luxury branding, SEO, ui/ux design, christmas theme">
+    <meta name="author" content="Texnox Agency">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts: Playfair Display (Classic Serif) & Inter (Modern Sans) -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        holiday: {
+                            green: '#0B2823',   /* Deep Evergreen - Primary Text/Bg */
+                            cream: '#FDFBF7',   /* Warm Snow - Background */
+                            gold: '#C5A059',    /* Antique Gold - Accents */
+                            red: '#8A1C1C',     /* Berry Red - Buttons/Highlights */
+                            slate: '#E2E8F0',   /* Light borders */
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 1s ease-out',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FDFBF7;
+            /* Holiday Cream */
+            color: #0B2823;
+            /* Holiday Green */
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- SNOWFALL EFFECT --- */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            color: #C5A059;
+            /* Gold Snow */
+            opacity: 0.3;
+            z-index: 1;
+            pointer-events: none;
+            user-select: none;
+            animation-name: fall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh);
+            }
+        }
+
+        /* --- BUTTON STYLES --- */
+        .btn-holiday {
+            background-color: #8A1C1C;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(138, 28, 28, 0.2);
+        }
+
+        .btn-holiday:hover {
+            background-color: #701111;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(138, 28, 28, 0.3);
+        }
+
+        .btn-classic-link {
+            position: relative;
+            color: #0B2823;
+            font-weight: 500;
+        }
+
+        .btn-classic-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: #C5A059;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        .btn-classic-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* --- CARD HOVER --- */
+        .service-card {
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(5px);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -5px rgba(11, 40, 35, 0.08);
+            border-color: #C5A059;
+        }
+
+        /* --- ANIMATED SHAPES --- */
+        .classic-shape {
+            position: absolute;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .shape-circle {
+            border-radius: 50%;
+            border: 1px solid rgba(197, 160, 89, 0.15);
+            /* Gold tint */
+            background: radial-gradient(circle, rgba(197, 160, 89, 0.05) 0%, rgba(255, 255, 255, 0) 70%);
+        }
+
+        .shape-square {
+            border: 1px solid rgba(138, 28, 28, 0.08);
+            /* Red tint */
+        }
+
+        .shape-filled {
+            background-color: rgba(11, 40, 35, 0.03);
+            /* Green tint */
+            border: none;
+        }
+
+        /* --- LOADER ANIMATION --- */
+        .loader-line {
+            background-color: #C5A059;
+            /* Gold Loader */
+            animation: loadLine 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loadLine {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            50% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* Mobile Menu Transition */
+        #mobile-menu {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+        }
+
+        /* Text Highlights */
+        .text-gold {
+            color: #C5A059;
+        }
+
+        .text-green {
+            color: #0B2823;
+        }
+
+        .bg-green {
+            background-color: #0B2823;
+        }
+
+        /* --- GIFT BOXES --- */
+        .gift-icon {
+            position: absolute;
+            /* Changed to absolute to work in different containers */
+            z-index: 2;
+            opacity: 0.15;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .gift-icon:hover {
+            opacity: 1;
+            transform: scale(1.2) rotate(0deg) !important;
+            z-index: 40;
+            cursor: pointer;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+        }
+
+        /* --- REALISTIC CHRISTMAS LIGHTS --- */
+        /* Common Wire/Bulb Styles */
+        .light-wire {
+            display: flex;
+            align-items: flex-start;
+            padding: 0 10px;
+        }
+
+        /* ... existing bulb styles ... */
+        .bulb-holder {
+            position: relative;
+            margin: 0 35px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform-origin: top center;
+            animation: bulb-sway 3s ease-in-out infinite alternate;
+        }
+
+        /* ... existing styles ... */
+
+        /* Container for Main Site Lights */
+        #light-string-container {
+            position: fixed;
+            top: 105px;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            z-index: 40;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        /* Container for Loader Lights */
+        #loader-lights {
+            position: absolute;
+            top: -15px;
+            /* Hang from the very top of the loader */
+            left: 0;
+            width: 100%;
+            height: 100px;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        /* Container for Loader Gifts */
+        #loader-gifts {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        /* ... existing wire/bulb css ... */
+        .bulb-holder::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            width: 80px;
+            height: 35px;
+            border-bottom: 2px solid #2d3748;
+            border-radius: 50%;
+            transform: translateX(0);
+            z-index: -1;
+            opacity: 0.9;
+        }
+
+        .bulb-holder:last-child::after {
+            display: none;
+        }
+
+        .bulb-socket {
+            width: 12px;
+            height: 12px;
+            background: #1a202c;
+            border-radius: 2px;
+            z-index: 2;
+            box-shadow: inset 0 0 2px black;
+        }
+
+        .light-bulb {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-top: -3px;
+            position: relative;
+            z-index: 1;
+            background: radial-gradient(circle at 65% 15%, rgba(255, 255, 255, 0.9) 2px, transparent 6px),
+                radial-gradient(circle at 50% 50%, var(--bulb-color) 50%, var(--bulb-dark) 100%);
+            box-shadow: 0px 5px 20px 5px var(--bulb-glow), inset 0 0 10px rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        /* ... rest of bulb CSS ... */
+        .light-bulb::before {
+            content: '';
+            position: absolute;
+            top: 25%;
+            left: 25%;
+            width: 50%;
+            height: 50%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.5), transparent 60%);
+            opacity: 0.7;
+        }
+
+        @keyframes bulb-sway {
+            0% {
+                transform: rotate(-5deg);
+            }
+
+            100% {
+                transform: rotate(5deg);
+            }
+        }
+
+        @keyframes bulb-flash {
+
+            0%,
+            100% {
+                opacity: 1;
+                box-shadow: 0px 5px 25px 8px var(--bulb-glow);
+            }
+
+            50% {
+                opacity: 0.8;
+                box-shadow: 0px 5px 15px 3px var(--bulb-glow);
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased selection:bg-holiday-gold selection:text-white">
+
+    <!-- LOADER -->
+    <div id="loader"
+        class="fixed inset-0 bg-holiday-cream z-[100] flex flex-col items-center justify-center transition-opacity duration-700">
+        <!-- Loader Decorations -->
+        <div id="loader-lights"></div>
+        <div id="loader-gifts"></div>
+
+        <div class="text-center relative z-20">
+            <span
+                class="font-serif text-4xl font-bold tracking-tight text-holiday-green block mb-6 animate-pulse">Texnox.</span>
+            <div class="w-32 h-[1px] bg-gray-200 overflow-hidden relative mx-auto">
+                <div class="absolute inset-0 w-full h-full loader-line"></div>
+            </div>
+            <p class="font-sans text-xs text-holiday-gold mt-4 tracking-[0.3em] uppercase">Curating Excellence</p>
+        </div>
+    </div>
+
+    <!-- BACKGROUND SHAPES CONTAINER (Ornaments/Abstract) -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="classic-shape shape-circle w-96 h-96 top-[-5%] left-[-5%] shape-anim"></div>
+        <div class="classic-shape shape-square w-64 h-64 top-[20%] right-[-2%] shape-anim delay-100 rotate-45"></div>
+        <div class="classic-shape shape-circle shape-filled w-80 h-80 bottom-[10%] left-[10%] shape-anim delay-200">
+        </div>
+        <div class="classic-shape shape-square w-48 h-48 bottom-[30%] right-[20%] shape-anim delay-300 rotate-12"></div>
+        <div class="classic-shape shape-circle w-32 h-32 top-[40%] left-[40%] shape-filled shape-anim delay-500"></div>
+    </div>
+
+    <!-- SNOW CONTAINER -->
+    <div id="snow-container" class="fixed inset-0 pointer-events-none z-[1]"></div>
+
+    <!-- GIFT CONTAINER -->
+    <div id="gift-container" class="fixed inset-0 pointer-events-auto z-[2] overflow-hidden"></div>
+
+    <!-- CHRISTMAS LIGHTS CONTAINER -->
+    <div id="light-string-container"></div>
+
+    <!-- NAVBAR -->
+    <nav class="fixed top-0 w-full z-50 bg-holiday-cream/90 backdrop-blur-md border-b border-holiday-gold/20 transition-all duration-300"
+        id="navbar">
+
+        <!-- HOLIDAY GREETING BANNER -->
+        <div
+            class="bg-holiday-red text-white text-[10px] md:text-xs font-sans font-bold tracking-[0.2em] text-center py-2 relative z-[60]">
+            <i class="fa-solid fa-star text-holiday-gold mr-2 text-[8px] align-middle mb-0.5 animate-pulse"></i>
+            MERRY CHRISTMAS & A HAPPY NEW YEAR
+            <i class="fa-solid fa-star text-holiday-gold ml-2 text-[8px] align-middle mb-0.5 animate-pulse"></i>
+        </div>
+
+        <div class="container mx-auto px-6 lg:px-12 h-20 flex justify-between items-center relative z-50">
+
+            <!-- Logo -->
+            <a href="#"
+                class="font-serif font-bold text-2xl tracking-tight text-holiday-green group flex items-center gap-2">
+                Texnox. <span
+                    class="text-holiday-red text-4xl leading-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 relative -top-1">.</span>
+            </a>
+
+            <!-- Menu (Desktop) -->
+            <div
+                class="hidden md:flex items-center gap-10 font-sans text-sm font-medium text-holiday-green/70 tracking-wide">
+                <a href="#" class="hover:text-holiday-green hover:text-shadow transition-colors">Home</a>
+                <a href="#work" class="hover:text-holiday-green transition-colors">Work</a>
+                <a href="#services" class="hover:text-holiday-green transition-colors">Services</a>
+                <a href="#about" class="hover:text-holiday-green transition-colors">Philosophy</a>
+            </div>
+
+            <!-- CTA -->
+            <div class="hidden md:block">
+                <a href="#contact"
+                    class="px-6 py-3 bg-holiday-red text-white text-sm font-medium hover:bg-red-900 transition shadow-lg shadow-red-100 rounded-sm flex items-center gap-2">
+                    <i class="fa-solid fa-gift text-xs"></i> Get in Touch
+                </a>
+            </div>
+
+            <!-- Mobile Button -->
+            <button id="mobile-menu-btn"
+                class="md:hidden text-holiday-green text-xl z-50 relative w-8 h-8 flex items-center justify-center">
+                <i class="fa-solid fa-bars transition-all duration-300"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu"
+            class="md:hidden fixed top-0 left-0 w-full h-screen bg-holiday-cream z-40 flex flex-col items-center justify-center translate-x-full opacity-0">
+            <div class="flex flex-col gap-8 font-serif text-2xl font-medium text-holiday-green text-center">
+                <a href="#" class="hover:text-holiday-gold transition-colors mobile-link">Home</a>
+                <a href="#work" class="hover:text-holiday-gold transition-colors mobile-link">Selected Work</a>
+                <a href="#services" class="hover:text-holiday-gold transition-colors mobile-link">Services</a>
+                <a href="#about" class="hover:text-holiday-gold transition-colors mobile-link">Philosophy</a>
+                <a href="#contact"
+                    class="mt-4 px-8 py-4 bg-holiday-red text-white text-base font-sans font-medium hover:bg-red-900 transition shadow-lg rounded-sm mobile-link">
+                    Start a Project
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="relative pt-32 pb-24 lg:pt-48 lg:pb-32 z-10">
+        <div class="container mx-auto px-6 lg:px-12 relative">
+            <div class="max-w-4xl mx-auto text-center">
+                <p
+                    class="font-sans text-xs font-semibold tracking-[0.2em] text-holiday-gold uppercase mb-8 opacity-0 hero-anim">
+                    Season's Greetings 2024
+                </p>
+
+                <h1
+                    class="font-serif text-5xl md:text-7xl lg:text-8xl text-holiday-green leading-[1.1] mb-10 opacity-0 hero-anim">
+                    Digital excellence <br>
+                    <span class="italic font-light text-holiday-gold">wrapped in elegance.</span>
+                </h1>
+
+                <p
+                    class="font-sans text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed mb-12 opacity-0 hero-anim font-light">
+                    From our team to yours, we wish you a Merry Christmas filled with joy and inspiration. Let's create
+                    something timeless for your brand this holiday season.
+                </p>
+
+                <div class="opacity-0 hero-anim">
+                    <a href="#process"
+                        class="inline-flex items-center gap-3 text-holiday-green font-medium btn-classic-link pb-1 group">
+                        View Selected Works <i
+                            class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ABOUT / PHILOSOPHY -->
+    <section id="about" class="py-32 relative z-10 border-t border-holiday-gold/10 bg-white/50 backdrop-blur-sm">
+        <div class="container mx-auto px-6 lg:px-12">
+            <div class="flex flex-col md:flex-row gap-16 items-start">
+                <div class="md:w-1/3 sticky top-32">
+                    <h2 class="font-serif text-3xl md:text-4xl text-holiday-green mb-6">Our Philosophy</h2>
+                    <div class="h-0.5 w-12 bg-holiday-gold"></div>
+                </div>
+                <div class="md:w-2/3">
+                    <p class="text-xl md:text-3xl font-serif text-holiday-green leading-relaxed mb-12">
+                        "Simplicity is the ultimate sophistication. Like a winter landscape, we strip away the noise to
+                        reveal pure beauty."
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div>
+                            <h4
+                                class="font-sans font-bold text-sm uppercase tracking-widest text-holiday-red mb-4 border-b border-gray-200 pb-2 inline-block">
+                                Precision</h4>
+                            <p class="text-gray-600 font-light leading-relaxed">Every pixel serves a purpose. We believe
+                                in design that communicates clearly. Our layouts breathe, allowing your content to shine
+                                like a star in the night sky.</p>
+                        </div>
+                        <div>
+                            <h4
+                                class="font-sans font-bold text-sm uppercase tracking-widest text-holiday-red mb-4 border-b border-gray-200 pb-2 inline-block">
+                                Function</h4>
+                            <p class="text-gray-600 font-light leading-relaxed">Beautiful design is meaningless without
+                                performance. We build robust systems that scale with your business, ensuring rapid load
+                                times.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="py-32 relative z-10">
+        <div class="container mx-auto px-6 lg:px-12">
+            <div class="text-center mb-24">
+                <span class="font-sans text-xs font-bold tracking-widest text-holiday-gold uppercase">What We Do</span>
+                <h2 class="font-serif text-4xl text-holiday-green mt-4">Our Expertise</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div
+                    class="service-card p-12 border border-holiday-gold/10 text-center relative overflow-hidden group rounded-sm">
+                    <div class="relative z-10">
+                        <div
+                            class="w-12 h-12 mx-auto bg-holiday-green/5 group-hover:bg-holiday-green group-hover:text-white rounded-full flex items-center justify-center mb-8 text-holiday-green transition-all duration-300">
+                            <i class="fa-regular fa-window-maximize"></i>
+                        </div>
+                        <h3 class="font-serif text-2xl mb-4 text-holiday-green">Web Design</h3>
+                        <p class="text-gray-600 font-light text-sm leading-relaxed">
+                            Bespoke interfaces designed with a focus on typography, layout, and user experience. We
+                            create digital homes that feel welcoming.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div
+                    class="service-card p-12 border border-holiday-gold/10 text-center relative overflow-hidden group rounded-sm">
+                    <div class="relative z-10">
+                        <div
+                            class="w-12 h-12 mx-auto bg-holiday-green/5 group-hover:bg-holiday-green group-hover:text-white rounded-full flex items-center justify-center mb-8 text-holiday-green transition-all duration-300">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <h3 class="font-serif text-2xl mb-4 text-holiday-green">Development</h3>
+                        <p class="text-gray-600 font-light text-sm leading-relaxed">
+                            Clean code architecture using modern frameworks. We prioritize semantic HTML, accessibility,
+                            and SEO-friendly structures.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div
+                    class="service-card p-12 border border-holiday-gold/10 text-center relative overflow-hidden group rounded-sm">
+                    <div class="relative z-10">
+                        <div
+                            class="w-12 h-12 mx-auto bg-holiday-green/5 group-hover:bg-holiday-green group-hover:text-white rounded-full flex items-center justify-center mb-8 text-holiday-green transition-all duration-300">
+                            <i class="fa-solid fa-pen-nib"></i>
+                        </div>
+                        <h3 class="font-serif text-2xl mb-4 text-holiday-green">Brand Identity</h3>
+                        <p class="text-gray-600 font-light text-sm leading-relaxed">
+                            Strategic branding that tells your story through logos, colors, and typography. We ensure
+                            consistency across all touchpoints.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROCESS -->
+    <!-- CHRISTMAS LIGHTS CONTAINER -->
+    <div id="light-string-container"></div>
+    <section id="process" class="py-32 bg-holiday-green text-white relative z-10">
+        <div class="container mx-auto px-6 lg:px-12 relative">
+            <!-- Decorative BG Icon -->
+            <i class="fa-regular fa-snowflake absolute top-10 right-10 text-9xl text-white opacity-5 rotate-12"></i>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div>
+                    <h2 class="font-serif text-4xl text-holiday-cream mb-8">The Process</h2>
+                    <p class="text-gray-400 font-light leading-relaxed max-w-md">
+                        Our methodology is rooted in collaboration. We guide you through every stage, ensuring the final
+                        result is a gift that keeps on giving.
+                    </p>
+                </div>
+                <div class="space-y-12">
+                    <div class="flex gap-6 group">
+                        <div class="font-serif text-4xl text-holiday-gold group-hover:text-white transition-colors">01.
+                        </div>
+                        <div>
+                            <h3 class="font-serif text-xl mb-2 text-holiday-cream">Discovery & Strategy</h3>
+                            <p class="text-gray-400 font-light text-sm">We immerse ourselves in your business to
+                                understand your goals, audience, and market position.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6 group">
+                        <div class="font-serif text-4xl text-holiday-gold group-hover:text-white transition-colors">02.
+                        </div>
+                        <div>
+                            <h3 class="font-serif text-xl mb-2 text-holiday-cream">Curation & Design</h3>
+                            <p class="text-gray-400 font-light text-sm">We explore visual directions and craft
+                                prototypes that align with your brand's essence.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6 group">
+                        <div class="font-serif text-4xl text-holiday-gold group-hover:text-white transition-colors">03.
+                        </div>
+                        <div>
+                            <h3 class="font-serif text-xl mb-2 text-holiday-cream">Elevation & Launch</h3>
+                            <p class="text-gray-400 font-light text-sm">We refine, test, and deploy. Post-launch, we
+                                provide support to ensure continued success.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIAL -->
+    <section class="py-32 bg-holiday-cream text-center relative z-10 border-t border-holiday-gold/10">
+        <div class="container mx-auto px-6">
+            <i class="fa-solid fa-star text-3xl text-holiday-gold mb-8 animate-pulse"></i>
+            <blockquote
+                class="font-serif text-3xl md:text-5xl max-w-5xl mx-auto leading-tight text-holiday-green mb-12">
+                "Texnox transformed our digital presence with an elegance we didn't know was possible. They are true
+                artisans of the web."
+            </blockquote>
+            <cite class="font-sans text-sm font-bold uppercase tracking-widest not-italic text-gray-400">
+                Team Texnox</cite>
+        </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="py-24 bg-white relative z-10 border-t border-holiday-gold/10">
+        <div class="container mx-auto px-6 lg:px-12 text-center">
+            <h2 class="font-serif text-3xl md:text-4xl text-holiday-green mb-6">Stay Inspired</h2>
+            <p class="text-gray-500 font-light mb-10 max-w-lg mx-auto">Join our curated newsletter for insights on
+                design and culture. No spam, just substance.</p>
+            <form class="max-w-md mx-auto flex border-b border-holiday-green pb-2">
+                <input type="email" placeholder="Email Address"
+                    class="bg-transparent w-full outline-none text-holiday-green placeholder-gray-400 font-sans">
+                <button type="submit"
+                    class="text-holiday-green hover:text-holiday-red uppercase font-bold text-xs tracking-widest transition">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact" class="bg-holiday-green text-white pt-24 pb-10 relative z-10">
+        <div class="container mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
+                <div>
+                    <h2 class="font-serif text-4xl md:text-5xl mb-6">Have a project<br>in mind?</h2>
+                    <div class="flex flex-col items-start gap-4">
+                        <a href="mailto:hello@texnox.com"
+                            class="font-serif text-2xl text-gray-400 hover:text-holiday-gold transition italic border-b border-gray-600 pb-1">
+                            texnox.co@gmail.com
+                        </a>
+                        <a href="tel:+15550123456"
+                            class="font-serif text-xl text-gray-400 hover:text-holiday-gold transition">
+                            +91 9825576262
+                        </a>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-end items-start md:items-end">
+                    <nav class="space-y-4 text-right mb-8">
+                        <a href="#" class="block text-gray-400 hover:text-white transition">Home</a>
+                        <a href="#work" class="block text-gray-400 hover:text-white transition">Portfolio</a>
+                        <a href="#contact" class="block text-gray-400 hover:text-white transition">Contact</a>
+                    </nav>
+                    <div class="flex gap-6">
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i
+                                class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i
+                                class="fa-brands fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i
+                                class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i
+                                class="fa-brands fa-behance"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500 font-sans tracking-wide">
+                <p>&copy; 2024 Texnox Agency. All Rights Reserved.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white">Privacy</a>
+                    <a href="#" class="hover:text-white">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LOGIC -->
+    <script>
+        // 1. Function to Initialize GSAP Animations
+        function initAnimations() {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Hero Text Fade In
+            gsap.to('.hero-anim', {
+                y: 0,
+                opacity: 1,
+                duration: 1.2,
+                stagger: 0.2,
+                ease: "power3.out",
+                delay: 0.2
+            });
+
+            // Scroll Animations for Services
+            gsap.utils.toArray('.service-card').forEach((card, i) => {
+                gsap.from(card, {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 85%",
+                    },
+                    y: 30,
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: "power2.out",
+                    delay: i * 0.1
+                });
+            });
+
+            // Animate Shapes
+            gsap.to('.shape-anim', {
+                y: -40,
+                rotation: 15,
+                duration: 8,
+                yoyo: true,
+                repeat: -1,
+                ease: "sine.inOut",
+                stagger: {
+                    amount: 2,
+                    from: "random"
+                }
+            });
+
+            // Parallax Effect for Shapes on Scroll
+            document.addEventListener('mousemove', (e) => {
+                const shapes = document.querySelectorAll('.classic-shape');
+                const x = (window.innerWidth - e.pageX * 2) / 100;
+                const y = (window.innerHeight - e.pageY * 2) / 100;
+
+                shapes.forEach((shape, index) => {
+                    const speed = (index + 1) * 0.5;
+                    gsap.to(shape, {
+                        x: x * speed,
+                        y: y * speed,
+                        duration: 1,
+                        ease: "power2.out"
+                    });
+                });
+            });
+        }
+
+        // 2. SNOWFALL EFFECT
+        function createSnowflakes() {
+            const container = document.getElementById('snow-container');
+            const snowflakeCount = 30; // Not too many to keep it clean
+
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.innerHTML = '•'; // Simple dot, or could use ❄
+                snowflake.style.left = Math.random() * 100 + 'vw';
+                snowflake.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                snowflake.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(snowflake);
+            }
+        }
+
+        // 3. RANDOM GIFT BOXES
+        function createGiftBoxes(containerId = 'gift-container') {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            // Colors from the theme
+            const colors = ['#C5A059', '#8A1C1C', '#0B2823'];
+            const giftCount = 12; // Number of gifts
+
+            for (let i = 0; i < giftCount; i++) {
+                const gift = document.createElement('i');
+                gift.classList.add('fa-solid', 'fa-gift', 'gift-icon');
+
+                // Random Styling
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                gift.style.color = color;
+
+                // Random Position (Keep away from extreme edges)
+                gift.style.left = (Math.random() * 90 + 5) + '%'; // Use % for better container adaptation
+                gift.style.top = (Math.random() * 90 + 5) + '%';
+
+                // Random Size
+                const size = Math.random() * 2 + 1.5; // 1.5rem to 3.5rem
+                gift.style.fontSize = size + 'rem';
+
+                // Random Rotation
+                const rotation = Math.random() * 30 - 15; // -15deg to 15deg
+                gift.style.transform = `rotate(${rotation}deg)`;
+
+                // Random Animation Delay
+                gift.style.animationDelay = (Math.random() * 5) + 's';
+
+                container.appendChild(gift);
+            }
+        }
+
+        // 4. REALISTIC CHRISTMAS LIGHTS
+        function createChristmasLights(containerId = 'light-string-container') {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            const wire = document.createElement('div');
+            wire.className = 'light-wire';
+
+            // Calculate number of lights based on screen width
+            // Approx 70px per bulb + spacing (adjusted for new margin)
+            const count = Math.ceil(window.innerWidth / 70) + 2;
+
+            // Colors: Red, Gold, Green, Warm White
+            const colors = [
+                { base: '#ef4444', dark: '#991b1b', glow: 'rgba(239, 68, 68, 0.6)' }, // Bright Red
+                { base: '#eab308', dark: '#854d0e', glow: 'rgba(234, 179, 8, 0.6)' }, // Gold
+                { base: '#22c55e', dark: '#14532d', glow: 'rgba(34, 197, 94, 0.6)' },   // Green
+                { base: '#3b82f6', dark: '#1e3a8a', glow: 'rgba(59, 130, 246, 0.6)' }  // Blue
+            ];
+
+            for (let i = 0; i < count; i++) {
+                const holder = document.createElement('div');
+                holder.className = 'bulb-holder';
+
+                // Random sway delay
+                holder.style.animationDelay = (Math.random() * 2) + 's';
+
+                const socket = document.createElement('div');
+                socket.className = 'bulb-socket';
+
+                const bulb = document.createElement('div');
+                bulb.className = 'light-bulb';
+
+                // Assign random color
+                const colorSet = colors[i % colors.length];
+                bulb.style.setProperty('--bulb-color', colorSet.base);
+                bulb.style.setProperty('--bulb-dark', colorSet.dark);
+                bulb.style.setProperty('--bulb-glow', colorSet.glow);
+
+                // Random flash animation
+                if (Math.random() > 0.3) {
+                    bulb.style.animation = `bulb-flash ${Math.random() * 3 + 2}s infinite alternate`;
+                }
+
+                holder.appendChild(socket);
+                holder.appendChild(bulb);
+                wire.appendChild(holder);
+            }
+            container.appendChild(wire);
+        }
+
+        // 5. LOADER LOGIC
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+
+            // Initialize Decor
+            createSnowflakes();
+
+            // Create Elements for Main Site
+            createGiftBoxes('gift-container');
+            createChristmasLights('light-string-container');
+
+            // Create Elements for Loader
+            createGiftBoxes('loader-gifts');
+            createChristmasLights('loader-lights');
+
+            // Wait a moment before fading out loader
+            setTimeout(() => {
+                loader.style.opacity = '0';
+
+                // After fade out transition finishes, hide element and start site animations
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    initAnimations();
+                }, 700);
+            }, 1200);
+        });
+
+        // 6. MOBILE MENU LOGIC
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        const menuIcon = mobileMenuBtn.querySelector('i');
+        let isMenuOpen = false;
+
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                // Open Menu
+                mobileMenu.classList.remove('translate-x-full', 'opacity-0');
+
+                // Change Icon
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-xmark');
+
+                // Prevent background scrolling
+                document.body.style.overflow = 'hidden';
+            } else {
+                // Close Menu
+                mobileMenu.classList.add('translate-x-full', 'opacity-0');
+
+                // Change Icon
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars');
+
+                // Restore scrolling
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+
+        // Close menu when a link is clicked
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+    </script>
+</body>
+
+</html>
